@@ -1,7 +1,7 @@
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View, Modal } from "react-native";
 import React, { useState } from "react";
 
-export default function Input({inputHandler}) {
+export default function Input({inputHandler, modelVisible, dismissModal}) {
   const [text, setText] = useState("");
   // callback handler
   function changeTextHandler(changedText) {
@@ -11,8 +11,13 @@ export default function Input({inputHandler}) {
   function confirmFunction() {
     inputHandler(text);
   }
+  function cancelHandler() {
+    // hide the modal
+    dismissModal();
+  }
   return (
-    <View>
+    <Modal visible={modelVisible}>
+    <View style={styles.container}>
       <TextInput
         placeholder="Type something"
         style={styles.input}
@@ -20,14 +25,23 @@ export default function Input({inputHandler}) {
         onChangeText={changeTextHandler}
       />
       <Button title='Confirm' onPress={confirmFunction} />
+      <Button title="Cancel" onPress={cancelHandler}/>
     </View>
+    </Modal>
+
   );
 }
 
 const styles = StyleSheet.create({
-  input: {
-    borderBottomWidth: 2,
-    borderBottomColor: "purple",
-    width: "50%",
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    input: {
+        borderBottomWidth: 2,
+        borderBottomColor: "purple",
+        width: "50%",
+    },
 });
