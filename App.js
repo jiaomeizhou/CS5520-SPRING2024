@@ -1,33 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import Hearder from './components/Header'
-import React, { useState } from 'react'
-
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, TextInput, View, Text } from "react-native";
+import Header from "./components/Header";
+import { useState } from "react";
+import Input from "./components/Input";
 
 export default function App() {
-  const appName = "My Native App";
+  const appName = "My awesome app";
   const [text, setText] = useState("");
-
-  // callback handler
-  function handleTextChange(changedText) {
-    console.log("user is typing", changedText)
-    setText(changedText)
+  function receiveInput(data) {
+    console.log("recieved data from input ", data);
+    setText(data);
   }
-
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Hearder name={appName} version={2}>
-        <Text>child 1</Text>
-        <TextInput 
-        placeholder='Enter your name'
-        style={styles.input}
-        value={text} 
-        onChangeText={handleTextChange}
-         />
-      </Hearder>
-      <Text>typeing: {text}</Text>
+      <Header name={appName} version={2} />
+      <Input inputHandler={receiveInput}/>
+      <Text>{text}</Text>
     </View>
   );
 }
@@ -35,14 +25,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  input:{
-    borderWidth: 1,
-    borderColor: 'black',
-    padding: 10,
-    width: 200,
-  }
 });
