@@ -26,8 +26,13 @@ export default function Input({ inputHandler, modelVisible, dismissModal }) {
                     value={text}
                     onChangeText={changeTextHandler}
                 />
-                <Button title='Confirm' onPress={confirmFunction} />
-                <Button title="Cancel" onPress={cancelHandler} />
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonView}>
+                        <Button title='Confirm' onPress={confirmFunction} /></View>
+                    <View style={styles.buttonView}>
+                        <Button title="Cancel" onPress={cancelHandler} />
+                    </View>
+                </View>
             </View>
         </Modal>
 
@@ -49,5 +54,13 @@ const styles = StyleSheet.create({
     image: {
         width: 50,
         height: 50,
+    },
+    buttonsContainer: {
+        flexDirection: "row",
+    },
+    buttonView: {
+        width: "30%",
+        margin: 5,
+
     }
 });
