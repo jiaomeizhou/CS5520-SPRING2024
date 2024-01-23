@@ -61,6 +61,5 @@ const styles = StyleSheet.create({
     buttonView: {
         width: "30%",
         margin: 5,
-
     }
 });
