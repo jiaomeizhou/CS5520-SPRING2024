@@ -13,11 +13,19 @@ import Input from "./components/Input";
 
 export default function App() {
   const appName = "My awesome app";
-  const [text, setText] = useState("");
+  // const [text, setText] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [goals, setGoals] = useState([]);
+
   function receiveInput(data) {
     console.log("recieve input ", data);
-    setText(data);
+    // setText(data);
+    const newGoal = {
+      text: data,
+      id: Math.random(),
+    }
+    setGoals((currentGoals) => { return [...currentGoals, newGoal] });
+
     setIsModalVisible(false);
     //use this to update the text showing in the
     //Text component
@@ -39,7 +47,14 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
-        <Text style={styles.text}>{text}</Text>
+        {goals.map((goalObj) => {
+          return <View style={styles.textContainer} key={goalObj.id}>
+            {/* <Text style={styles.text}>{text}</Text> */}
+            {/* {text && <Text style={styles.text}>{text}</Text>} */}
+            <Text style={styles.text}>{goalObj.text}</Text>
+          </View>
+        })}
+
       </View>
     </SafeAreaView>
   );
@@ -57,6 +72,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
   },
-  bottomView: { flex: 4, backgroundColor: "lightpink" },
-  text: { textAlign: "center" },
+  bottomView: {
+    flex: 4,
+    backgroundColor: "lightpink",
+    alignItems: "center",
+  },
+  text: {
+    textAlign: "center",
+    fontSize: 20,
+    color: "white",
+    padding: 15,
+    borderRadius: 10,
+  },
+  textContainer: {
+    backgroundColor: "grey",
+    marginTop: 10,
+    borderRadius: 5,
+    alignItems: "center",
+  },
 });

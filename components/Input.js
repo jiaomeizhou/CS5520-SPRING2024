@@ -46,7 +46,7 @@ import {
               <Button title="Cancel" onPress={cancelHandler} />
             </View>
             <View style={styles.buttonView}>
-              <Button title="Confirm" onPress={confirmHandler} />
+              <Button title="Confirm" onPress={confirmHandler} disabled={!text}/>
             </View>
           </View>
         </View>
@@ -58,6 +58,7 @@ import {
     buttonView: {
       width: "30%",
       margin: 5,
+      color: "purple",
     },
     buttonsContainer: { flexDirection: "row" },
     input: {
