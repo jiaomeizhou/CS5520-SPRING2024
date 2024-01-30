@@ -1,14 +1,16 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native'
+import { View, Text, FlatList, StyleSheet, Button} from 'react-native'
 import React from 'react'
 
-export default function GoalItem({ goals }) {
+export default function GoalItem({ goals, goalDeleteHandler}) {
+    function deleteHandler() {
+        goalDeleteHandler();
+    }
     return (
         <FlatList contentContainerStyle={styles.flatList} data={goals} renderItem={({ item }) => {  // item.item == {item}
             console.log("item ", { item });
             return <View style={styles.textContainer}>
-                {/* <Text style={styles.text}>{text}</Text> */}
-                {/* {text && <Text style={styles.text}>{text}</Text>} */}
                 <Text style={styles.text}>{item.text}</Text>
+                <Button title='X' onPress={deleteHandler}/>
             </View>
         }}>
         </FlatList>
@@ -31,5 +33,6 @@ styles = StyleSheet.create({
         marginTop: 10,
         borderRadius: 5,
         alignItems: "center",
+        flexDirection: "row",
     },
 })

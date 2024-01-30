@@ -36,6 +36,11 @@ export default function App() {
   function dismissModal() {
     setIsModalVisible(false);
   }
+
+  function goalDeleteHandler() {
+    console.log("delete pressed");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -50,7 +55,7 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
-        <GoalItem goals={goals} />
+        <GoalItem goals={goals} goalDeleteHandler={goalDeleteHandler}/>
       </View>
     </SafeAreaView>
   );
@@ -88,4 +93,7 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     alignItems: "center",
   },
+  flatList: {
+    alignItems: "center",
+},
 });
