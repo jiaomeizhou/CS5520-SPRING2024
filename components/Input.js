@@ -24,6 +24,7 @@ import {
     function cancelHandler() {
       // hide the modal
       dismissModal();
+      setText("");
     }
     return (
       <Modal visible={modalVisible}>

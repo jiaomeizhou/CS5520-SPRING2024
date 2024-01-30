@@ -6,6 +6,8 @@ import {
   Text,
   Button,
   SafeAreaView,
+  ScrollView,
+  FlatList,
 } from "react-native";
 import Header from "./components/Header";
 import { useState } from "react";
@@ -47,13 +49,15 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
-        {goals.map((goalObj) => {
-          return <View style={styles.textContainer} key={goalObj.id}>
+        <FlatList contentContainerStyle={styles.flatList} data={goals} renderItem={({item}) => {  // item.item == {item}
+          console.log("item ", {item});
+          return <View style={styles.textContainer}>
             {/* <Text style={styles.text}>{text}</Text> */}
             {/* {text && <Text style={styles.text}>{text}</Text>} */}
-            <Text style={styles.text}>{goalObj.text}</Text>
+            <Text style={styles.text}>{item.text}</Text>
           </View>
-        })}
+        }}>
+        </FlatList>
 
       </View>
     </SafeAreaView>
@@ -75,7 +79,6 @@ const styles = StyleSheet.create({
   bottomView: {
     flex: 4,
     backgroundColor: "lightpink",
-    alignItems: "center",
   },
   text: {
     textAlign: "center",
@@ -90,4 +93,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
   },
+  scrollViewContent: {
+    alignItems: "center",
+  },
+  flatList: {
+    alignItems: "center",
+  }
 });
