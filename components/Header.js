@@ -4,22 +4,18 @@ import React from "react";
 export default function Header({ name }) {
   return (
     <View>
-      <Text style={styles.titleText}>Welcome to {name}</Text>
+      <Text style={styles.header}>Welcome to {name}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  titleText: {
+  header: {
+    color: "darkmagenta",
     fontSize: 20,
-    color: "purple",
-    borderColor: "purple",
+    borderColor: "darkmagenta",
     borderWidth: 2,
-    padding: 10,
+    padding: 5,
+    borderRadius: 5,
   },
 });
