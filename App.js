@@ -12,6 +12,7 @@ import {
 import Header from "./components/Header";
 import { useState } from "react";
 import Input from "./components/Input";
+import GoalItem from "./components/GoalItem";
 
 export default function App() {
   const appName = "My awesome app";
@@ -49,16 +50,7 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
-        <FlatList contentContainerStyle={styles.flatList} data={goals} renderItem={({item}) => {  // item.item == {item}
-          console.log("item ", {item});
-          return <View style={styles.textContainer}>
-            {/* <Text style={styles.text}>{text}</Text> */}
-            {/* {text && <Text style={styles.text}>{text}</Text>} */}
-            <Text style={styles.text}>{item.text}</Text>
-          </View>
-        }}>
-        </FlatList>
-
+        <GoalItem goals={goals} />
       </View>
     </SafeAreaView>
   );
@@ -96,7 +88,4 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     alignItems: "center",
   },
-  flatList: {
-    alignItems: "center",
-  }
 });
