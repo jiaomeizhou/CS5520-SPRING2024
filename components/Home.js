@@ -14,7 +14,7 @@ import { useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 
-export default function Home() {
+export default function Home({ navigation}) {
   const appName = "My awesome app";
   // const [text, setText] = useState("");
   const [goals, setGoals] = useState([]);
@@ -53,6 +53,13 @@ export default function Home() {
       );
     });
   }
+
+  function goalDetailHandler(goal) {
+    console.log("detail button pressed");
+    // navigation.navigate('Details', {goalId: goal.id, goalText: goal.text});
+    navigation.navigate('Details', {goal: goal});
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -72,7 +79,7 @@ export default function Home() {
           data={goals}
           renderItem={({ item }) => {
             return (
-              <GoalItem goalObj={item} deleteFunction={goalDeleteHandler} />
+              <GoalItem goalObj={item} deleteFunction={goalDeleteHandler} detailFunction={goalDetailHandler}/>
             );
           }}
         />
