@@ -4,6 +4,7 @@ import Home from './components/Home'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import GoalDetails from './components/GoalDetails'
+import { Button } from 'react-native'
 
 const Stack = createNativeStackNavigator()
 
@@ -18,8 +19,11 @@ export default function App() {
           headerTitle: 'All my goals',
         }} />
         <Stack.Screen name="Details" component={GoalDetails} options={
-          ({ route }) => ({ headerTitle: route.params.goal.text, headerTitleAlign: 'center' })
-        }/>
+          ({ navigation, route }) => ({ 
+            headerTitle: route.params.goal.text, 
+            headerTitleAlign: 'center',
+           })
+        } />
       </Stack.Navigator>
     </NavigationContainer>
   )

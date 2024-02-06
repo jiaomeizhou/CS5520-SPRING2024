@@ -1,7 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Button } from 'react-native'
+import React, { useEffect } from 'react'
 
-export default function GoalDetails({ route }) {
+export default function GoalDetails({ navigation, route }) {
+    useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => {
+                return <Button title="warning" color="grey" onPress={() => alert("Are you sure?")} />
+            }
+        })
+    })
+
     console.log(route);
     return (
         <View>
