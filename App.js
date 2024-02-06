@@ -38,8 +38,20 @@ export default function App() {
   function dismissModal() {
     setIsModalVisible(false);
   }
-  function goalDeleteHandler() {
-    console;
+  function goalDeleteHandler(goalId) {
+    console.log("delete button pressed");
+    // remove the goal from the goals array
+    const newGoals = goals.filter((goal) => {
+      return goal.id !== goalId; // strictly not equal
+    }
+    );
+    // update the goals array, make sure the goals can be updated before rerendering
+    setGoals((newGoals)=>{
+      return goals.filter((goal) => {
+        return goal.id !== goalId;
+      }
+      );
+    });
   }
   return (
     <SafeAreaView style={styles.container}>

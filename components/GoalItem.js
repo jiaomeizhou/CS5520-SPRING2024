@@ -3,7 +3,9 @@ import React from "react";
 
 export default function GoalItem({ goalObj, deleteFunction }) {
   function deleteHandler() {
-    deleteFunction();
+    deleteFunction(goalObj.id);
+    // pass the id of the goal to the parent
+    console.log("delete button pressed", goalObj.id);
   }
   return (
     <View style={styles.textContainer}>
