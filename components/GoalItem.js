@@ -1,38 +1,31 @@
-import { View, Text, FlatList, StyleSheet, Button} from 'react-native'
-import React from 'react'
+import { Button, StyleSheet, Text, View } from "react-native";
+import React from "react";
 
-export default function GoalItem({ goals, goalDeleteHandler}) {
-    function deleteHandler() {
-        goalDeleteHandler();
-    }
-    return (
-        <FlatList contentContainerStyle={styles.flatList} data={goals} renderItem={({ item }) => {  // item.item == {item}
-            console.log("item ", { item });
-            return <View style={styles.textContainer}>
-                <Text style={styles.text}>{item.text}</Text>
-                <Button title='X' onPress={deleteHandler}/>
-            </View>
-        }}>
-        </FlatList>
-    )
+export default function GoalItem({ goalObj, deleteFunction }) {
+  function deleteHandler() {
+    deleteFunction();
+  }
+  return (
+    <View style={styles.textContainer}>
+      <Text style={styles.text}>{goalObj.text}</Text>
+      <Button color="gray" title="X" onPress={deleteHandler} />
+    </View>
+  );
 }
 
-styles = StyleSheet.create({
-    flatList: {
-        alignItems: "center",
-    },
-    text: {
-        textAlign: "center",
-        fontSize: 20,
-        color: "white",
-        padding: 15,
-        borderRadius: 10,
-    },
-    textContainer: {
-        backgroundColor: "grey",
-        marginTop: 10,
-        borderRadius: 5,
-        alignItems: "center",
-        flexDirection: "row",
-    },
-})
+const styles = StyleSheet.create({
+  text: {
+    textAlign: "center",
+    fontSize: 30,
+    color: "#929",
+    padding: 5,
+    borderRadius: 10,
+  },
+  textContainer: {
+    borderRadius: 10,
+    backgroundColor: "#aaa",
+    marginTop: 15,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+});

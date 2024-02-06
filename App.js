@@ -17,18 +17,20 @@ import GoalItem from "./components/GoalItem";
 export default function App() {
   const appName = "My awesome app";
   // const [text, setText] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
   function receiveInput(data) {
-    console.log("recieve input ", data);
+    // console.log("recieve input ", data);
     // setText(data);
-    const newGoal = {
-      text: data,
-      id: Math.random(),
-    }
-    setGoals((currentGoals) => { return [...currentGoals, newGoal] });
+    //1. define a new object {text:.., id:..} and store data in object's text
+    // 2. use Math.random() to set the object's id
+    const newGoal = { text: data, id: Math.random() };
+    // const newArray = [...goals, newGoal];
+    //setGoals (newArray)
+    //use updater function whenever we are updating state variables based on the current value
+    setGoals((currentGoals) => [...currentGoals, newGoal]);
 
+    // 3. how do I add this object to goals array?
     setIsModalVisible(false);
     //use this to update the text showing in the
     //Text component
@@ -36,11 +38,9 @@ export default function App() {
   function dismissModal() {
     setIsModalVisible(false);
   }
-
   function goalDeleteHandler() {
-    console.log("delete pressed");
+    console;
   }
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -55,7 +55,24 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
-        <GoalItem goals={goals} goalDeleteHandler={goalDeleteHandler}/>
+        <FlatList
+          contentContainerStyle={styles.scrollViewContent}
+          data={goals}
+          renderItem={({ item }) => {
+            return (
+              <GoalItem goalObj={item} deleteFunction={goalDeleteHandler} />
+            );
+          }}
+        />
+        {/* <ScrollView contentContainerStyle={styles.scrollViewContent}> */}
+        {/* {goals.map((goalObj) => {
+            return (
+              <View style={styles.textContainer} key={goalObj.id}>
+                <Text style={styles.text}>{goalObj.text}</Text>
+              </View>
+            );
+          })} */}
+        {/* </ScrollView> */}
       </View>
     </SafeAreaView>
   );
@@ -73,27 +90,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
   },
-  bottomView: {
-    flex: 4,
-    backgroundColor: "lightpink",
-  },
-  text: {
-    textAlign: "center",
-    fontSize: 20,
-    color: "white",
-    padding: 15,
-    borderRadius: 10,
-  },
-  textContainer: {
-    backgroundColor: "grey",
-    marginTop: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
   scrollViewContent: {
     alignItems: "center",
   },
-  flatList: {
-    alignItems: "center",
-},
+  bottomView: { flex: 4, backgroundColor: "#dcd" },
 });
