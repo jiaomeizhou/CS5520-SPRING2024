@@ -14,7 +14,7 @@ import { useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 
-export default function Home({ navigation}) {
+export default function Home({ navigation }) {
   const appName = "My awesome app";
   // const [text, setText] = useState("");
   const [goals, setGoals] = useState([]);
@@ -38,26 +38,28 @@ export default function Home({ navigation}) {
   function dismissModal() {
     setIsModalVisible(false);
   }
-  function goalDeleteHandler(goalId) {
-    console.log("delete button pressed");
-    // remove the goal from the goals array
-    const newGoals = goals.filter((goal) => {
-      return goal.id !== goalId; // strictly not equal
-    }
-    );
-    // update the goals array, make sure the goals can be updated before rerendering
-    setGoals((newGoals)=>{
-      return goals.filter((goal) => {
-        return goal.id !== goalId;
-      }
-      );
+
+  function goalDeleteHandler(deletedId) {
+    console.log("deleted ", deletedId);
+    // remove that from the goals array --> filter
+    // const updatedArray = goals.filter((goal) => {
+    //   return goal.id !== deletedId;
+    // });
+    //use updater function whenever we are updating state variables based on the current value
+
+    // setGoals(updatedArray);
+    setGoals((currentGoals) => {
+      return currentGoals.filter((goal) => {
+        return goal.id !== deletedId;
+      });
     });
   }
 
-  function goalDetailHandler(goal) {
-    console.log("detail button pressed");
-    // navigation.navigate('Details', {goalId: goal.id, goalText: goal.text});
-    navigation.navigate('Details', {goal: goal});
+  function goalPressHandler(goalItem) {
+    // console.log(goalItem);
+    // navigate to GoalDetails using navigation prop
+    //We need to pass the goal data to Details page
+    navigation.navigate("Details", { data: goalItem });
   }
 
   return (
@@ -79,7 +81,11 @@ export default function Home({ navigation}) {
           data={goals}
           renderItem={({ item }) => {
             return (
-              <GoalItem goalObj={item} deleteFunction={goalDeleteHandler} detailFunction={goalDetailHandler}/>
+              <GoalItem
+                goalObj={item}
+                deleteFunction={goalDeleteHandler}
+                detailFunction={goalPressHandler}
+              />
             );
           }}
         />
