@@ -1,5 +1,7 @@
 import { Button, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
+import PressableButton from "./PressableButton";
+import { Feather } from '@expo/vector-icons';
 
 export default function GoalItem({ goalObj, deleteFunction, detailFunction }) {
   function deleteHandler() {
@@ -11,11 +13,14 @@ export default function GoalItem({ goalObj, deleteFunction, detailFunction }) {
   return (
     <View >
       <Pressable
-        customStyle={({ pressed }) => { return [styles.textContainer, pressed && styles.pressed] }}
+        style={({ pressed }) => { return [styles.textContainer, pressed && styles.pressed] }}
         onPress={goalPressHandler}
         android_ripple={{ color: "#e9e" }}>
         <Text style={styles.text}>{goalObj.text}</Text>
-        <Button color="black" title="X" onPress={deleteHandler} />
+        {/* <Button color="black" title="X" onPress={deleteHandler} /> */}
+        <PressableButton onPress={deleteHandler}>
+          <Feather name="delete" size={24} color="green" />
+        </PressableButton>
       </Pressable>
     </View>
   );

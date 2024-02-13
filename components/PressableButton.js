@@ -11,7 +11,8 @@ export default function PressableButton({ customStyle, onPress, children }) {
 
 const styles = StyleSheet.create({
     defaultStyle: {
-        backgroundColor: "blue",
+        padding: 10,
+        borderRadius: 10,
     },
     pressed: {
         opacity: 0.5,
