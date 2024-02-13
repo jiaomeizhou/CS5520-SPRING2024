@@ -11,14 +11,11 @@ export default function GoalItem({ goalObj, deleteFunction, detailFunction }) {
   return (
     <View >
       <Pressable
-        style={({ pressed }) => { return [styles.textContainer, pressed && styles.pressed] }}
-        // style={(pressed) => (pressed ? styles.pressed : null)}
+        customStyle={({ pressed }) => { return [styles.textContainer, pressed && styles.pressed] }}
         onPress={goalPressHandler}
         android_ripple={{ color: "#e9e" }}>
-
         <Text style={styles.text}>{goalObj.text}</Text>
         <Button color="black" title="X" onPress={deleteHandler} />
-
       </Pressable>
     </View>
   );

@@ -8,11 +8,13 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
+  Pressable,
 } from "react-native";
 import Header from "./Header";
 import { useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
+import PressableButton from "./PressableButton";
 
 export default function Home({ navigation }) {
   const appName = "My awesome app";
@@ -68,7 +70,10 @@ export default function Home({ navigation }) {
         <StatusBar style="auto" />
 
         <Header name={appName} version={2} />
-        <Button title="Add a goal" onPress={() => setIsModalVisible(true)} />
+        {/* <Button title="Add a goal" onPress={() => setIsModalVisible(true)} /> */}
+        <PressableButton customStyle={styles.addButton} onPress={() => setIsModalVisible(true)}>
+          <Text>Add a goal</Text>
+        </PressableButton>
         <Input
           inputHandler={receiveInput}
           modalVisible={isModalVisible}
@@ -119,4 +124,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   bottomView: { flex: 4, backgroundColor: "#dcd" },
+  addButton: {
+    backgroundColor: "green",
+    padding: 10,
+    borderRadius: 10,
+  },
 });
