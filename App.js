@@ -1,62 +1,39 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Text,
-  Button,
-  SafeAreaView,
-} from "react-native";
-import Header from "./components/Header";
-import { useState } from "react";
-import Input from "./components/Input";
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import Home from "./components/Home";
 
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import GoalDetails from "./components/GoalDetails";
+const Stack = createNativeStackNavigator();
 export default function App() {
-  const appName = "My awesome app";
-  const [text, setText] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  function receiveInput(data) {
-    console.log("recieve input ", data);
-    setText(data);
-    setIsModalVisible(false);
-    //use this to update the text showing in the
-    //Text component
-  }
-  function dismissModal() {
-    setIsModalVisible(false);
-  }
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.topView}>
-        <StatusBar style="auto" />
-
-        <Header name={appName} version={2} />
-        <Button title="Add a goal" onPress={() => setIsModalVisible(true)} />
-        <Input
-          inputHandler={receiveInput}
-          modalVisible={isModalVisible}
-          dismissModal={dismissModal}
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: "#929" },
+          headerTintColor: "white",
+        }}
+      >
+        <Stack.Screen
+          options={{
+            headerTitle: "All My Goals",
+          }}
+          name="Home"
+          component={Home}
         />
-      </View>
-      <View style={styles.bottomView}>
-        <Text style={styles.text}>{text}</Text>
-      </View>
-    </SafeAreaView>
+        <Stack.Screen
+          options={({ route }) => {
+            return {
+              headerTitle: route.params ? route.params.data.text : "Details",
+            };
+          }}
+          name="Details"
+          component={GoalDetails}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    // alignItems: "center",
-    justifyContent: "center",
-  },
-  topView: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "space-around",
-  },
-  bottomView: { flex: 4, backgroundColor: "lightpink" },
-  text: { textAlign: "center" },
-});
+const styles = StyleSheet.create({});
