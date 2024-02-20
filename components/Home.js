@@ -11,12 +11,29 @@ import {
   Pressable,
 } from "react-native";
 import Header from "./Header";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
+import { collection, onSnapshot } from "firebase/firestore";
+import { database } from "../firebase-files/firebaseSetup";
+import { writeToDB, deleteFromDB} from "../firebase-files/firestoreHelper";
+
 
 export default function Home({ navigation }) {
+  useEffect(() => {
+    // set up a listener to get the data from the database, only after the first time
+    onSnapshot(collection(database, "goals"), (querySnapshot)=> {
+        // console.log("querySnapshot", querySnapshot);
+        const currentGoals = [];
+        querySnapshot.forEach((doc)=>{
+          console.log(doc.data());
+          currentGoals.push({...doc.data(), id: doc.id});
+        })
+        setGoals(currentGoals);
+    })
+  },[])
+  console.log(database);
   const appName = "My awesome app";
   // const [text, setText] = useState("");
   const [goals, setGoals] = useState([]);
@@ -26,7 +43,12 @@ export default function Home({ navigation }) {
     // setText(data);
     //1. define a new object {text:.., id:..} and store data in object's text
     // 2. use Math.random() to set the object's id
-    const newGoal = { text: data, id: Math.random() };
+    // const newGoal = { text: data, id: Math.random() };
+    // don't use Math.random() for id generation, use firebase's auto id generation
+    const newGoal = {text: data}
+    // write to database
+    writeToDB(newGoal);
+
     // const newArray = [...goals, newGoal];
     //setGoals (newArray)
     //use updater function whenever we are updating state variables based on the current value
@@ -50,11 +72,14 @@ export default function Home({ navigation }) {
     //use updater function whenever we are updating state variables based on the current value
 
     // setGoals(updatedArray);
-    setGoals((currentGoals) => {
-      return currentGoals.filter((goal) => {
-        return goal.id !== deletedId;
-      });
-    });
+    // setGoals((currentGoals) => {
+    //   return currentGoals.filter((goal) => {
+    //     return goal.id !== deletedId;
+    //   });
+    // });
+    //delete from database
+    deleteFromDB(deletedId);
+
   }
 
   function goalPressHandler(goalItem) {
