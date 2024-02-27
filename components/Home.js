@@ -21,9 +21,10 @@ import { writeToDB, deleteFromDB} from "../firebase-files/firestoreHelper";
 
 
 export default function Home({ navigation }) {
+  function cleanup() {}
   useEffect(() => {
     // set up a listener to get the data from the database, only after the first time
-    onSnapshot(collection(database, "goals"), (querySnapshot)=> {
+    const unsubscribe = onSnapshot(collection(database, "goals"), (querySnapshot)=> {
         // console.log("querySnapshot", querySnapshot);
         const currentGoals = [];
         querySnapshot.forEach((doc)=>{
@@ -32,6 +33,11 @@ export default function Home({ navigation }) {
         })
         setGoals(currentGoals);
     })
+    // cleanup function
+    return () => {
+      console.log("cleanup");
+      unsubscribe();
+    }
   },[])
   console.log(database);
   const appName = "My awesome app";
