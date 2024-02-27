@@ -21,7 +21,6 @@ import { writeToDB, deleteFromDB} from "../firebase-files/firestoreHelper";
 
 
 export default function Home({ navigation }) {
-  function cleanup() {}
   useEffect(() => {
     // set up a listener to get the data from the database, only after the first time
     const unsubscribe = onSnapshot(collection(database, "goals"), (querySnapshot)=> {
@@ -53,7 +52,7 @@ export default function Home({ navigation }) {
     // don't use Math.random() for id generation, use firebase's auto id generation
     const newGoal = {text: data}
     // write to database
-    writeToDB(newGoal);
+    writeToDB(newGoal, "goals");
 
     // const newArray = [...goals, newGoal];
     //setGoals (newArray)

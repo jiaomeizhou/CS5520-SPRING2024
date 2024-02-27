@@ -1,11 +1,14 @@
-import { collection, addDoc, deleteDoc, doc} from "firebase/firestore";
+import { collection, addDoc, deleteDoc, doc, getDocs} from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
-export async function writeToDB(goal) {
+export async function writeToDB(goal, col, docId, subCol) {
     try {
-        const docRef = await addDoc(collection(database, "goals"), goal);
-        console.log("Document successfully written!");
-        console.log("Document written with ID: ", docRef.id);
+        if (docId) {
+            await addDoc(collection(database, col, docId, subCol), goal);
+        }
+        else {
+            await addDoc(collection(database, col), goal);
+        }
     } catch (e) {
         console.error("Error adding document: ", e);
     }
@@ -18,4 +21,18 @@ export async function deleteFromDB(id) {
     } catch (e) {
         console.error("Error removing document: ", e);
     }
+}
+
+export async function getAllDocs(path) {
+    try {
+        const querySnapshot = await getDocs(collection(database, path));
+        const data = [];
+        querySnapshot.forEach((doc) => {
+            data.push(doc.data());
+        });
+        return data;
+    } catch (e) {
+        console.error("Error getting documents: ", e);
+    }
+
 }
