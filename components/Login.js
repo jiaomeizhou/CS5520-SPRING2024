@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase-files/firebaseSetup";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
@@ -7,7 +9,25 @@ export default function Login({ navigation }) {
   const signupHandler = () => {
     navigation.navigate("Signup");
   };
-  const loginHandler = async () => {};
+  const loginHandler = async () => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log("userCredential: ", userCredential);
+    }
+    catch (error) {
+        if (!email || !password ) {
+            Alert.alert("Please fill in all the fields");
+            return;
+        }
+        console.log("error", error);
+        if (error.code === "auth/email-already-in-use") {
+            Alert.alert("Error", "Email already in use");
+        }
+        else if (error.code === "auth/weak-password") {
+            Alert.alert("Error", "Weak password");
+        }
+    }
+  };
 
   return (
     <View style={styles.container}>

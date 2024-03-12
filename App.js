@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import {React, useState, useEffect} from "react";
 import Home from "./components/Home";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -7,21 +7,31 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import GoalDetails from "./components/GoalDetails";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
+import { auth } from "./firebase-files/firebaseSetup";
+
 const Stack = createNativeStackNavigator();
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Signup"
-        screenOptions={{
-          headerStyle: { backgroundColor: "#929" },
-          headerTintColor: "white",
-        }}
-      >
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Signup" component={Signup} />
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  console.log("userLoggedIn: ", userLoggedIn);
 
-        <Stack.Screen
+  // check if user is logged in， if no useEffect, it will check every time
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserLoggedIn(true);
+      } else {
+        setUserLoggedIn(false);
+      }
+    });
+  }, []);
+
+  const AuthStack = <>
+    <Stack.Screen name="Login" component={Login} />
+    <Stack.Screen name="Signup" component={Signup} />
+  </>
+
+  const AppStack = <>
+          <Stack.Screen
           options={{
             headerTitle: "All My Goals",
           }}
@@ -37,6 +47,19 @@ export default function App() {
           name="Details"
           component={GoalDetails}
         />
+  </>
+
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Signup"
+        screenOptions={{
+          headerStyle: { backgroundColor: "#929" },
+          headerTintColor: "white",
+        }}
+      >
+        {userLoggedIn ? AppStack : AuthStack}
       </Stack.Navigator>
     </NavigationContainer>
   );
