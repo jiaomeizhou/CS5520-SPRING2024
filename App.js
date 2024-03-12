@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import {React, useState, useEffect} from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { React, useState, useEffect } from "react";
 import Home from "./components/Home";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -8,6 +8,9 @@ import GoalDetails from "./components/GoalDetails";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import { auth } from "./firebase-files/firebaseSetup";
+import Profile from "./components/Profile";
+import PressableButton from "./components/PressableButton";
+import { AntDesign } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -31,22 +34,36 @@ export default function App() {
   </>
 
   const AppStack = <>
-          <Stack.Screen
-          options={{
+    <Stack.Screen
+        options={({ navigation }) => {
+          return {
             headerTitle: "All My Goals",
-          }}
-          name="Home"
-          component={Home}
-        />
-        <Stack.Screen
-          options={({ route }) => {
-            return {
-              headerTitle: route.params ? route.params.data.text : "Details",
-            };
-          }}
-          name="Details"
-          component={GoalDetails}
-        />
+            headerRight: () => {
+              return (
+                <PressableButton
+                  onPressFunction={() => {
+                    navigation.navigate("Profile");
+                  }}
+                >
+                  <AntDesign name="profile" size={24} color="black" />
+                </PressableButton>
+              );
+            },
+          };
+        }}
+      name="Home"
+      component={Home}
+    />
+    <Stack.Screen
+      options={({ route }) => {
+        return {
+          headerTitle: route.params ? route.params.data.text : "Details",
+        };
+      }}
+      name="Details"
+      component={GoalDetails}
+    />
+    <Stack.Screen name="Profile" component={Profile} />
   </>
 
 
