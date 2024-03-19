@@ -29,6 +29,11 @@ export default function Input({ inputHandler, modalVisible, dismissModal }) {
     // hide the modal
     dismissModal();
   }
+
+  function receiveImageURI(uri) {
+    console.log("received uri", uri);
+  }
+
   return (
     <Modal visible={modalVisible} animationType="slide" transparent={true}>
       <View style={styles.container}>
@@ -46,7 +51,7 @@ export default function Input({ inputHandler, modalVisible, dismissModal }) {
             value={text}
             onChangeText={changeTextHandler}
           />
-          <ImageManager />
+          <ImageManager receiveImageURI={receiveImageURI}/>
           <View style={styles.buttonsContainer}>
             <View style={styles.buttonView}>
               <Button title="Cancel" onPress={cancelHandler} />
