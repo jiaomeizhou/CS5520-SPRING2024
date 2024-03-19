@@ -1,17 +1,35 @@
 import { View, Text, Button } from 'react-native'
 import React from 'react'
 import * as ImagePicker from 'expo-image-picker'
-import PressableButton from './PressableButton'
+
 
 export default function ImageManager() {
+    const [status, requestPermission] = ImagePicker.useCameraPermissions();
+
+    async function verifyPemission() {
+        if (status !== 'granted') {
+            result = await requestPermission();
+            return result;
+        }
+        else {
+            return true;
+        }
+    }
+
     const takeImageHandler = async () => {
         try {
-            const result = await ImagePicker.launchCameraAsync(
+            const havePermission = verifyPemission();
+            console.log(havePermission)
+            if (!havePermission) {
+                alert('Permission to access camera is required');
+                return;
+            }
+            const results = await ImagePicker.launchCameraAsync(
                 {
                  allowsEditing: true,   
                 }
             )
-            console.log(result)
+            console.log(results.assets[0].uri)
         }
         catch (error) {
             console.log(error)
