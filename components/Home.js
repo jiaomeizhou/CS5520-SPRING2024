@@ -15,15 +15,17 @@ import { useState, useEffect} from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where} from "firebase/firestore";
 import { database } from "../firebase-files/firebaseSetup";
 import { writeToDB, deleteFromDB} from "../firebase-files/firestoreHelper";
+import { auth } from "../firebase-files/firebaseSetup";
+
 
 
 export default function Home({ navigation }) {
   useEffect(() => {
     // set up a listener to get the data from the database, only after the first time
-    const unsubscribe = onSnapshot(collection(database, "goals"), (querySnapshot)=> {
+    const unsubscribe = onSnapshot(query(collection(database, "goals"), where("owner", "==", auth.currentUser.uid)), (querySnapshot)=> {
         // console.log("querySnapshot", querySnapshot);
         const currentGoals = [];
         querySnapshot.forEach((doc)=>{
@@ -31,7 +33,10 @@ export default function Home({ navigation }) {
           currentGoals.push({...doc.data(), id: doc.id});
         })
         setGoals(currentGoals);
-    })
+    },
+    (error) => {
+      console.log("error getting data", error);
+    });
     // cleanup function
     return () => {
       console.log("cleanup");
@@ -100,10 +105,10 @@ export default function Home({ navigation }) {
         <StatusBar style="auto" />
 
         <Header name={appName} version={2} />
-        {/* <Button title="Add a goal" onPress={() => setIsModalVisible(true)} /> */}
-        <PressableButton customStyle={styles.addButton} onPress={() => setIsModalVisible(true)}>
+        <Button title="Add a goal" onPress={() => setIsModalVisible(true)} />
+        {/* <PressableButton customStyle={styles.addButton} onPress={() => setIsModalVisible(true)}>
           <Text>Add a goal</Text>
-        </PressableButton>
+        </PressableButton> */}
         <Input
           inputHandler={receiveInput}
           modalVisible={isModalVisible}

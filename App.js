@@ -10,7 +10,8 @@ import Login from "./components/Login";
 import { auth } from "./firebase-files/firebaseSetup";
 import Profile from "./components/Profile";
 import PressableButton from "./components/PressableButton";
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { signOut } from "firebase/auth";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -35,22 +36,22 @@ export default function App() {
 
   const AppStack = <>
     <Stack.Screen
-        options={({ navigation }) => {
-          return {
-            headerTitle: "All My Goals",
-            headerRight: () => {
-              return (
-                <PressableButton
-                  onPressFunction={() => {
-                    navigation.navigate("Profile");
-                  }}
-                >
-                  <AntDesign name="profile" size={24} color="black" />
-                </PressableButton>
-              );
-            },
-          };
-        }}
+      options={({ navigation }) => {
+        return {
+          headerTitle: "All My Goals",
+          headerRight: () => {
+            return (
+              <PressableButton
+                onPressFunction={() => {
+                  navigation.navigate("Profile");
+                }}
+              >
+                <AntDesign name="profile" size={24} color="black" />
+              </PressableButton>
+            );
+          },
+        };
+      }}
       name="Home"
       component={Home}
     />
@@ -63,7 +64,27 @@ export default function App() {
       name="Details"
       component={GoalDetails}
     />
-    <Stack.Screen name="Profile" component={Profile} />
+    <Stack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        headerRight: () => {
+          return (
+            <PressableButton
+              onPressFunction={() => {
+                try {
+                  signOut(auth);
+                } catch (err) {
+                  console.log(err);
+                }
+              }}
+            >
+              <AntDesign name="logout" size={24} color="white" />
+            </PressableButton>
+          );
+        },
+      }}
+    />
   </>
 
 

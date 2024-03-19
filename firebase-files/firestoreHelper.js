@@ -1,5 +1,6 @@
 import { collection, addDoc, deleteDoc, doc, getDocs} from "firebase/firestore";
 import { database } from "./firebaseSetup";
+import { auth } from "./firebaseSetup";
 
 export async function writeToDB(goal, col, docId, subCol) {
     try {
@@ -7,7 +8,10 @@ export async function writeToDB(goal, col, docId, subCol) {
             await addDoc(collection(database, col, docId, subCol), goal);
         }
         else {
-            await addDoc(collection(database, col), goal);
+            if (col === "goals") {
+                goal = {...goal, owner: auth.currentUser.uid};
+                await addDoc(collection(database, col), goal);
+            }
         }
     } catch (e) {
         console.error("Error adding document: ", e);
