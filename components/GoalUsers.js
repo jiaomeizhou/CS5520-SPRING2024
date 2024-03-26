@@ -9,7 +9,7 @@ export default function GoalUsers({id}) {
         async function fetchUsers() {
             try {
                 const usersFromDB = await getAllDocs(`goals/${id}/users`);
-                if (usersFromDB.length) {
+                if (usersFromDB) {
                     console.log("usersFromDB: ", usersFromDB);
                     setUsers(usersFromDB); // if it's already in the database, don't fetch again
                     return;
