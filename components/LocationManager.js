@@ -1,6 +1,7 @@
 import { View, Text, Button, Image } from 'react-native'
 import React, { useState } from 'react'
 import * as Location from 'expo-location'
+import { mapsApiKey } from "@env"
 
 export default function LocationManager() {
     const [status, requestPermission] = Location.useForegroundPermissions();
@@ -41,12 +42,15 @@ export default function LocationManager() {
             console.log("error: ", error);
         }
     }
+    if (location) {
+        console.log("api", `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude} & zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=AIzaSyC9e8wMt9caQ4-A7GwyYWuaEgzqvFQuk24`)
+    }
 
     return (
         <View>
             <Button title="Locate me" onPress={locateUserHandler} />
             {location && <Image source={{
-                uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude} & zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=AIzaSyC9e8wMt9caQ4-A7GwyYWuaEgzqvFQuk24`
+                uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${mapsApiKey}`
             }} style={{ width: 200, height: 200 }} />
             }
         </View>
