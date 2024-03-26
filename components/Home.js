@@ -48,14 +48,14 @@ export default function Home({ navigation }) {
   // const [text, setText] = useState("");
   const [goals, setGoals] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  function receiveInput(data) {
+  function receiveInput(data, imageURI) {
     // console.log("recieve input ", data);
     // setText(data);
     //1. define a new object {text:.., id:..} and store data in object's text
     // 2. use Math.random() to set the object's id
     // const newGoal = { text: data, id: Math.random() };
     // don't use Math.random() for id generation, use firebase's auto id generation
-    const newGoal = {text: data}
+    const newGoal = {text: data, imageURI: imageURI}
     // write to database
     writeToDB(newGoal, "goals");
 

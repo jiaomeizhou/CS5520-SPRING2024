@@ -1,4 +1,4 @@
-import { View, Text, Button, Image} from 'react-native'
+import { View, Text, Button, Image } from 'react-native'
 import React from 'react'
 import * as ImagePicker from 'expo-image-picker'
 
@@ -27,7 +27,7 @@ export default function ImageManager({ receiveImageURI }) {
             }
             const results = await ImagePicker.launchCameraAsync(
                 {
-                 allowsEditing: true,   
+                    allowsEditing: true,
                 }
             )
             uri = results.assets[0].uri;
@@ -42,7 +42,9 @@ export default function ImageManager({ receiveImageURI }) {
     return (
         <View>
             <Button title="Take an image" onPress={takeImageHandler} />
-            <Image source={{ uri: imageURI }} style={{ width: 200, height: 200 }} />
+            {imageURI &&
+                <Image source={{ uri: imageURI }} style={{ width: 200, height: 200 }} />
+            }
         </View>
     )
 }

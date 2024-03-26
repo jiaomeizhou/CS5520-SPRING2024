@@ -12,6 +12,7 @@ import ImageManager from "./ImageManager";
 
 export default function Input({ inputHandler, modalVisible, dismissModal }) {
   const [text, setText] = useState("");
+  const [imageURI, setImageURI] = useState(null);
   // callback handler
   function changeTextHandler(changedText) {
     // console.log("user is typing ", changedText);
@@ -20,7 +21,7 @@ export default function Input({ inputHandler, modalVisible, dismissModal }) {
   }
 
   function confirmHandler() {
-    inputHandler(text);
+    inputHandler(text, imageURI);
     setText("");
   }
   function cancelHandler() {
@@ -32,6 +33,7 @@ export default function Input({ inputHandler, modalVisible, dismissModal }) {
 
   function receiveImageURI(uri) {
     console.log("received uri", uri);
+    setImageURI(uri);
   }
 
   return (
