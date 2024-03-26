@@ -11,51 +11,68 @@ import {
   Pressable,
 } from "react-native";
 import Header from "./Header";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
-import { collection, onSnapshot, query, where} from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { database } from "../firebase-files/firebaseSetup";
-import { writeToDB, deleteFromDB} from "../firebase-files/firestoreHelper";
+import { writeToDB, deleteFromDB } from "../firebase-files/firestoreHelper";
 import { auth } from "../firebase-files/firebaseSetup";
+import { ref, uploadBytes } from "firebase/storage";
+import { storage } from "../firebase-files/firebaseSetup";
 
 
 
 export default function Home({ navigation }) {
   useEffect(() => {
     // set up a listener to get the data from the database, only after the first time
-    const unsubscribe = onSnapshot(query(collection(database, "goals"), where("owner", "==", auth.currentUser.uid)), (querySnapshot)=> {
-        // console.log("querySnapshot", querySnapshot);
-        const currentGoals = [];
-        querySnapshot.forEach((doc)=>{
-          console.log(doc.data());
-          currentGoals.push({...doc.data(), id: doc.id});
-        })
-        setGoals(currentGoals);
+    const unsubscribe = onSnapshot(query(collection(database, "goals"), where("owner", "==", auth.currentUser.uid)), (querySnapshot) => {
+      // console.log("querySnapshot", querySnapshot);
+      const currentGoals = [];
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+        currentGoals.push({ ...doc.data(), id: doc.id });
+      })
+      setGoals(currentGoals);
     },
-    (error) => {
-      console.log("error getting data", error);
-    });
+      (error) => {
+        console.log("error getting data", error);
+      });
     // cleanup function
     return () => {
       console.log("cleanup");
       unsubscribe();
     }
-  },[])
+  }, [])
   console.log(database);
   const appName = "My awesome app";
   // const [text, setText] = useState("");
   const [goals, setGoals] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  function receiveInput(data, imageURI) {
+
+  async function receiveInput(data, imageURI) {
     // console.log("recieve input ", data);
     // setText(data);
+    console.log("we are in home imageURI", imageURI);
+    if (imageURI) {
+      try {
+        const response = await fetch(imageURI);
+        const imageBlob = await response.blob();
+        const imageName = uri.substring(uri.lastIndexOf('/') + 1);
+        const imageRef = await ref(storage, `images/${imageName}`);
+        const uploadResult = await uploadBytes(imageRef, imageBlob);
+        console.log("upload result", uploadResult);
+      }
+      catch (error) {
+        console.log("error fetching image", error);
+      }
+    }
     //1. define a new object {text:.., id:..} and store data in object's text
     // 2. use Math.random() to set the object's id
     // const newGoal = { text: data, id: Math.random() };
     // don't use Math.random() for id generation, use firebase's auto id generation
-    const newGoal = {text: data, imageURI: imageURI}
+    const newGoal = { text: data, imageURI: imageURI }
     // write to database
     writeToDB(newGoal, "goals");
 
